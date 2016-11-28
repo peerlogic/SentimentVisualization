@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Getting started with the Rainbow Graph for developers</title>
+        <link rel="stylesheet" href="static/style.css">
+    </head>
+    <body>
+        <script>
+            function submitform(){
+                console.log("Sending Json");
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4) {
+                       resp = JSON.parse(xhr.responseText);
+                       document.getElementById('links').innerHTML += '<li type="square">'
+                               + '<a href="' + resp.url +'" target="_blank" >' + resp.url + '</a>'
+                                + '</a><button type="button" class="submit-button" onclick="deleteUrl(\'' + resp.url + '\')">delete</button></li>';
+                    }
+                }
+                xhr.open(input_form.method, window.location.href.replace("developer", "configure") , true);
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                xhr.send(document.getElementById("json_config").value);
+            }
+
+            function deleteUrl(url){
+                id = url.substr(url.lastIndexOf('/') + 1)
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4) {
+
+                    }
+                }
+                line = '<li type="square"><a href="' + url +'" target="_blank">' + url + '</a><button type="button" class="submit-button" onclick="deleteUrl(\'' + url + '\')">delete</button></li>'
+                document.getElementById('links').innerHTML = document.getElementById('links').innerHTML.replace(line, "")
+
+                xhr.open("DELETE", "viz/" + id, true);
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                xhr.send();
+            }
+
+            function copyToClipboard(elem) {
+                  // create hidden text element, if it doesn't already exist
+                var targetId = "_hiddenCopyText_";
+                var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+                var origSelectionStart, origSelectionEnd;
+                if (isInput) {
+                    // can just use the original source element for the selection and copy
+                    target = elem;
+                    origSelectionStart = elem.selectionStart;
+                    origSelectionEnd = elem.selectionEnd;
+                } else {
+                    // must use a temporary form element for the selection and copy
+                    target = document.getElementById(targetId);
+                    if (!target) {
+                        var target = document.createElement("textarea");
+                        target.style.position = "absolute";
+                        target.style.left = "-9999px";
+                        target.style.top = "0";
+                        target.id = targetId;
+                        document.body.appendChild(target);
+                    }
+                    target.textContent = elem.textContent;
+                }
+                // select the content
+                var currentFocus = document.activeElement;
+                target.focus();
+                target.setSelectionRange(0, target.value.length);
+
+                // copy the selection
+                var succeed;
+                try {
+                      succeed = document.execCommand("copy");
+                } catch(e) {
+                    succeed = false;
+                }
+                // restore original focus
+                if (currentFocus && typeof currentFocus.focus === "function") {
+                    currentFocus.focus();
+                }
+
+                if (isInput) {
+                    // restore prior selection
+                    elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+                } else {
+                    // clear temporary content
+                    target.textContent = "";
+                }
+                return succeed;
+            }
+
+        </script>
+
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        </script>
+        <form class="form-container" action="http://peerlogic.csc.ncsu.edu/rainbowgraph/configure" method="POST" name="input_form">
+            <div><h2 class="form-title">The Rainbow Graph</h2></div>
+            <div class="form-title">This page is intended for developers, <a href="instructor">klick here if you are an instructor</a></div>
+
+            <div class="form-title">Enter a JSON Configuration for your Rainbow Graph</div>
+            <div class="form-title">(See <a target="_blank" href="https://www.peerlogic.org/visualization-rainbowgraph/">this documentation</a> to learn how the configuration file should be formatted, or check the example below)</div>
+            <br/>
+            <div class="fb-like" data-href="https://www.facebook.com/nsfpeerlogic" data-layout="standard" data-action="like" data-size="small" data-show-faces="false" data-share="true"></div>
+            <br/>
+            <p>
+                <textarea rows="50" cols="160"  name="json config" id="json_config" class="form-field">
+[{
+    "metadata": {
+        "primary-value-label": "rank average",
+        "higher_primary_value_better": false,
+        "values-label": "ranks",
+        "higher_values_better": false,
+        "best-value-possible": 1,
+        "worst-value-possible": 5,
+        "y-axis-label": "Rank Average",
+        "x-axis-label": "Students",
+        "color-scheme": "5b",
+        "secondary-value-label": "variance"
+    },
+
+    "data": [{
+        "first_name": "Trump",
+        "last_name": "Trump",
+        "column_url": "/assignments/737/responses/54715/showcrit?crit_assignment_id=744",
+        "primary_value": 1.285714286,
+        "secondary_value": 0.489795918,
+        "values": [1, 1, 1, 1, 1, 1, 3]
+    }, {
+        "first_name": "Clinton",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54771/showcrit?crit_assignment_id=744",
+        "primary_value": 1.666666667,
+        "secondary_value": 0.555555556,
+        "values": [1, 1, 1, 2, 2, 3]
+    }, {
+        "first_name": "Ross",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54781/showcrit?crit_assignment_id=744",
+        "primary_value": 1.714285714,
+        "secondary_value": 1.346938776,
+        "values": [1, 1, 1, 1, 1, 3, 4]
+    }, {
+        "first_name": "Burk",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54769/showcrit?crit_assignment_id=744",
+        "primary_value": 1.8,
+        "secondary_value": 1.36,
+        "values": [1, 1, 1, 2, 4]
+    }, {
+        "first_name": "Macy",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54914/showcrit?crit_assignment_id=744",
+        "primary_value": 1.833333333,
+        "secondary_value": 1.138888889,
+        "values": [1, 1, 1, 2, 2, 4]
+    }, {
+        "first_name": "Red",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54788/showcrit?crit_assignment_id=744",
+        "primary_value": 2,
+        "secondary_value": 1.2,
+        "values": [1, 1, 2, 2, 4]
+    }, {
+        "first_name": "Ken",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54916/showcrit?crit_assignment_id=744",
+        "primary_value": 2,
+        "secondary_value": 0.5,
+        "values": [1, 2, 2, 3]
+    }, {
+        "first_name": "Joe",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54815/showcrit?crit_assignment_id=744",
+        "primary_value": 2.142857143,
+        "secondary_value": 1.836734694,
+        "values": [1, 1, 1, 2, 2, 3, 5]
+    }, {
+        "first_name": "Barbie",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54854/showcrit?crit_assignment_id=744",
+        "primary_value": 2.142857143,
+        "secondary_value": 1.265306122,
+        "values": [1, 1, 1, 2, 3, 3, 4]
+    }, {
+        "first_name": "Ann",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54734/showcrit?crit_assignment_id=744",
+        "primary_value": 2.25,
+        "secondary_value": 2.6875,
+        "values": [1, 1, 2, 5]
+    }, {
+        "first_name": "Moe",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54768/showcrit?crit_assignment_id=744",
+        "primary_value": 2.25,
+        "secondary_value": 1.1875,
+        "values": [1, 2, 2, 4]
+    }, {
+        "first_name": "Mr. X",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54853/showcrit?crit_assignment_id=744",
+        "primary_value": 2.25,
+        "secondary_value": 0.6875,
+        "values": [1, 2, 3, 3]
+    }, {
+        "first_name": "John",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54819/showcrit?crit_assignment_id=744",
+        "primary_value": 2.428571429,
+        "secondary_value": 0.530612245,
+        "values": [2, 2, 2, 2, 2, 3, 4]
+    }, {
+        "first_name": "Jane",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54778/showcrit?crit_assignment_id=744",
+        "primary_value": 2.6,
+        "secondary_value": 1.84,
+        "values": [1, 2, 2, 3, 5]
+    }, {
+        "first_name": "James",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54761/showcrit?crit_assignment_id=744",
+        "primary_value": 2.666666667,
+        "secondary_value": 1.555555556,
+        "values": [1, 3, 4]
+    }, {
+        "first_name": "Joan",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54931/showcrit?crit_assignment_id=744",
+        "primary_value": 2.75,
+        "secondary_value": 2.1875,
+        "values": [1, 2, 3, 5]
+    }, {
+        "first_name": "Howard",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54773/showcrit?crit_assignment_id=744",
+        "primary_value": 2.8,
+        "secondary_value": 0.56,
+        "values": [2, 2, 3, 3, 4]
+    }, {
+        "first_name": "Bob",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54743/showcrit?crit_assignment_id=744",
+        "primary_value": 2.833333333,
+        "secondary_value": 0.472222222,
+        "values": [2, 2, 3, 3, 3, 4]
+    }, {
+        "first_name": "Daisy",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54796/showcrit?crit_assignment_id=744",
+        "primary_value": 2.833333333,
+        "secondary_value": 2.472222222,
+        "values": [1, 1, 2, 4, 4, 5]
+    }, {
+        "first_name": "Aa",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54928/showcrit?crit_assignment_id=744",
+        "primary_value": 2.833333333,
+        "secondary_value": 0.805555556,
+        "values": [2, 2, 2, 3, 4, 4]
+    }, {
+        "first_name": "Ab",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54721/showcrit?crit_assignment_id=744",
+        "primary_value": 2.857142857,
+        "secondary_value": 1.265306122,
+        "values": [1, 2, 2, 3, 4, 4, 4]
+    }, {
+        "first_name": "Ac",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54729/showcrit?crit_assignment_id=744",
+        "primary_value": 2.857142857,
+        "secondary_value": 0.979591837,
+        "values": [1, 2, 3, 3, 3, 4, 4]
+    }, {
+        "first_name": "Ad",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54716/showcrit?crit_assignment_id=744",
+        "primary_value": 3,
+        "secondary_value": 1,
+        "values": [1, 3, 3, 3, 4, 4]
+    }, {
+        "first_name": "Dd",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54720/showcrit?crit_assignment_id=744",
+        "primary_value": 3,
+        "secondary_value": 2,
+        "values": [1, 1, 3, 3, 4, 4, 5]
+    }, {
+        "first_name": "Cx",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54774/showcrit?crit_assignment_id=744",
+        "primary_value": 3,
+        "secondary_value": 2.8,
+        "values": [1, 2, 2, 5, 5]
+    }, {
+        "first_name": "Elma",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54843/showcrit?crit_assignment_id=744",
+        "primary_value": 3,
+        "secondary_value": 1.2,
+        "values": [1, 3, 3, 4, 4]
+    }, {
+        "first_name": "Ronie",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54934/showcrit?crit_assignment_id=744",
+        "primary_value": 3,
+        "secondary_value": 1.142857143,
+        "values": [1, 2, 3, 3, 4, 4, 4]
+    }, {
+        "first_name": "Niki",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54917/showcrit?crit_assignment_id=744",
+        "primary_value": 3.333333333,
+        "secondary_value": 2.222222222,
+        "values": [1, 2, 3, 4, 5, 5]
+    }, {
+        "first_name": "Hashi",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54780/showcrit?crit_assignment_id=744",
+        "primary_value": 3.5,
+        "secondary_value": 1.25,
+        "values": [2, 3, 4, 5]
+    }, {
+        "first_name": "Ahmed",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54783/showcrit?crit_assignment_id=744",
+        "primary_value": 3.5,
+        "secondary_value": 0.916666667,
+        "values": [2, 3, 3, 4, 4, 5]
+    }, {
+        "first_name": "NN",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54820/showcrit?crit_assignment_id=744",
+        "primary_value": 3.5,
+        "secondary_value": 1.25,
+        "values": [2, 3, 4, 5]
+    }, {
+        "first_name": "Rodnie",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54821/showcrit?crit_assignment_id=744",
+        "primary_value": 3.5,
+        "secondary_value": 2.25,
+        "values": [1, 2, 4, 4, 5, 5]
+    }, {
+        "first_name": "Bobby",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54718/showcrit?crit_assignment_id=744",
+        "primary_value": 3.571428571,
+        "secondary_value": 1.102040816,
+        "values": [2, 3, 3, 3, 4, 5, 5]
+    }, {
+        "first_name": "Av",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54872/showcrit?crit_assignment_id=744",
+        "primary_value": 3.571428571,
+        "secondary_value": 0.816326531,
+        "values": [2, 3, 3, 4, 4, 4, 5]
+    }, {
+        "first_name": "Ag",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54919/showcrit?crit_assignment_id=744",
+        "primary_value": 3.714285714,
+        "secondary_value": 0.775510204,
+        "values": [2, 3, 4, 4, 4, 4, 5]
+    }, {
+        "first_name": "Ice",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54847/showcrit?crit_assignment_id=744",
+        "primary_value": 4,
+        "secondary_value": 0.8,
+        "values": [3, 3, 4, 5, 5]
+    }, {
+        "first_name": "Cornie",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54855/showcrit?crit_assignment_id=744",
+        "primary_value": 4,
+        "secondary_value": 0.857142857,
+        "values": [2, 4, 4, 4, 4, 5, 5]
+    }, {
+        "first_name": "Muhadin",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54784/showcrit?crit_assignment_id=744",
+        "primary_value": 4.333333333,
+        "secondary_value": 0.888888889,
+        "values": [3, 5, 5]
+    }, {
+        "first_name": "Hassan",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54823/showcrit?crit_assignment_id=744",
+        "primary_value": 4.4,
+        "secondary_value": 1.44,
+        "values": [2, 5, 5, 5, 5]
+    }, {
+        "first_name": "Britney",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54802/showcrit?crit_assignment_id=744",
+        "primary_value": 4.6,
+        "secondary_value": 0.64,
+        "values": [3, 5, 5, 5, 5]
+    }, {
+        "first_name": "Duck",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54770/showcrit?crit_assignment_id=744",
+        "primary_value": 4.666666667,
+        "secondary_value": 0.555555556,
+        "values": [3, 5, 5, 5, 5, 5]
+    }, {
+        "first_name": "Don",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54777/showcrit?crit_assignment_id=744",
+        "primary_value": 5,
+        "secondary_value": 0,
+        "values": [5, 5, 5, 5, 5, 5, 5]
+    }, {
+        "first_name": "Betsy",
+        "last_name": "",
+        "column_url": "/assignments/737/responses/54922/showcrit?crit_assignment_id=744",
+        "primary_value": 5,
+        "secondary_value": 0,
+        "values": [5, 5, 5]
+    }]
+}]
+                </textarea>
+            </p>
+            <p><button type="button"  class="submit-button" onclick="submitform()">Go get the url to my rainbow graph!</button></p>
+        </form>
+        <div class="form-container">
+            <div id="error"></div>
+            <h2 class="form-title">Your Rainbow Graph can be accessed through the following URLs</h2>
+            <ul>
+                <div id="links"></div>
+            </ul>
+        </div>
+        <!--
+        &nbsp;
+        <div class="form-container">
+            <div class="form-title"><h2>Example of JSON configuration</h2></div>
+             &nbsp;
+            <p><button type="button" class="submit-button" onclick="copyToClipboard(document.getElementById('json_example'))">Copy Example</button></p>
+            <pre id="json_example">
+            [{
+                "metadata": {
+                    "primary-value-label": "rank average",
+                    "higher_primary_value_better": false,
+                    "values-label": "ranks",
+                    "higher_values_better": false,
+                    "best-value-possible": 1,
+                    "worst-value-possible": 5,
+                    "y-axis-label": "Rank Average",
+                    "x-axis-label": "Students",
+                    "color-scheme": "5b",
+                    "secondary-value-label": "variance"
+                },
+
+                "data": [{
+                    "first_name": "Trump",
+                    "last_name": "Trump",
+                    "column_url": "/assignments/737/responses/54715/showcrit?crit_assignment_id=744",
+                    "primary_value": 1.285714286,
+                    "secondary_value": 0.489795918,
+                    "values": [1, 1, 1, 1, 1, 1, 3]
+                }, {
+                    "first_name": "Clinton",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54771/showcrit?crit_assignment_id=744",
+                    "primary_value": 1.666666667,
+                    "secondary_value": 0.555555556,
+                    "values": [1, 1, 1, 2, 2, 3]
+                }, {
+                    "first_name": "Ross",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54781/showcrit?crit_assignment_id=744",
+                    "primary_value": 1.714285714,
+                    "secondary_value": 1.346938776,
+                    "values": [1, 1, 1, 1, 1, 3, 4]
+                }, {
+                    "first_name": "Burk",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54769/showcrit?crit_assignment_id=744",
+                    "primary_value": 1.8,
+                    "secondary_value": 1.36,
+                    "values": [1, 1, 1, 2, 4]
+                }, {
+                    "first_name": "Macy",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54914/showcrit?crit_assignment_id=744",
+                    "primary_value": 1.833333333,
+                    "secondary_value": 1.138888889,
+                    "values": [1, 1, 1, 2, 2, 4]
+                }, {
+                    "first_name": "Red",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54788/showcrit?crit_assignment_id=744",
+                    "primary_value": 2,
+                    "secondary_value": 1.2,
+                    "values": [1, 1, 2, 2, 4]
+                }, {
+                    "first_name": "Ken",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54916/showcrit?crit_assignment_id=744",
+                    "primary_value": 2,
+                    "secondary_value": 0.5,
+                    "values": [1, 2, 2, 3]
+                }, {
+                    "first_name": "Joe",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54815/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.142857143,
+                    "secondary_value": 1.836734694,
+                    "values": [1, 1, 1, 2, 2, 3, 5]
+                }, {
+                    "first_name": "Barbie",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54854/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.142857143,
+                    "secondary_value": 1.265306122,
+                    "values": [1, 1, 1, 2, 3, 3, 4]
+                }, {
+                    "first_name": "Ann",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54734/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.25,
+                    "secondary_value": 2.6875,
+                    "values": [1, 1, 2, 5]
+                }, {
+                    "first_name": "Moe",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54768/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.25,
+                    "secondary_value": 1.1875,
+                    "values": [1, 2, 2, 4]
+                }, {
+                    "first_name": "Mr. X",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54853/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.25,
+                    "secondary_value": 0.6875,
+                    "values": [1, 2, 3, 3]
+                }, {
+                    "first_name": "John",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54819/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.428571429,
+                    "secondary_value": 0.530612245,
+                    "values": [2, 2, 2, 2, 2, 3, 4]
+                }, {
+                    "first_name": "Jane",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54778/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.6,
+                    "secondary_value": 1.84,
+                    "values": [1, 2, 2, 3, 5]
+                }, {
+                    "first_name": "James",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54761/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.666666667,
+                    "secondary_value": 1.555555556,
+                    "values": [1, 3, 4]
+                }, {
+                    "first_name": "Joan",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54931/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.75,
+                    "secondary_value": 2.1875,
+                    "values": [1, 2, 3, 5]
+                }, {
+                    "first_name": "Howard",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54773/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.8,
+                    "secondary_value": 0.56,
+                    "values": [2, 2, 3, 3, 4]
+                }, {
+                    "first_name": "Bob",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54743/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.833333333,
+                    "secondary_value": 0.472222222,
+                    "values": [2, 2, 3, 3, 3, 4]
+                }, {
+                    "first_name": "Daisy",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54796/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.833333333,
+                    "secondary_value": 2.472222222,
+                    "values": [1, 1, 2, 4, 4, 5]
+                }, {
+                    "first_name": "Aa",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54928/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.833333333,
+                    "secondary_value": 0.805555556,
+                    "values": [2, 2, 2, 3, 4, 4]
+                }, {
+                    "first_name": "Ab",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54721/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.857142857,
+                    "secondary_value": 1.265306122,
+                    "values": [1, 2, 2, 3, 4, 4, 4]
+                }, {
+                    "first_name": "Ac",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54729/showcrit?crit_assignment_id=744",
+                    "primary_value": 2.857142857,
+                    "secondary_value": 0.979591837,
+                    "values": [1, 2, 3, 3, 3, 4, 4]
+                }, {
+                    "first_name": "Ad",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54716/showcrit?crit_assignment_id=744",
+                    "primary_value": 3,
+                    "secondary_value": 1,
+                    "values": [1, 3, 3, 3, 4, 4]
+                }, {
+                    "first_name": "Dd",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54720/showcrit?crit_assignment_id=744",
+                    "primary_value": 3,
+                    "secondary_value": 2,
+                    "values": [1, 1, 3, 3, 4, 4, 5]
+                }, {
+                    "first_name": "Cx",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54774/showcrit?crit_assignment_id=744",
+                    "primary_value": 3,
+                    "secondary_value": 2.8,
+                    "values": [1, 2, 2, 5, 5]
+                }, {
+                    "first_name": "Elma",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54843/showcrit?crit_assignment_id=744",
+                    "primary_value": 3,
+                    "secondary_value": 1.2,
+                    "values": [1, 3, 3, 4, 4]
+                }, {
+                    "first_name": "Ronie",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54934/showcrit?crit_assignment_id=744",
+                    "primary_value": 3,
+                    "secondary_value": 1.142857143,
+                    "values": [1, 2, 3, 3, 4, 4, 4]
+                }, {
+                    "first_name": "Niki",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54917/showcrit?crit_assignment_id=744",
+                    "primary_value": 3.333333333,
+                    "secondary_value": 2.222222222,
+                    "values": [1, 2, 3, 4, 5, 5]
+                }, {
+                    "first_name": "Hashi",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54780/showcrit?crit_assignment_id=744",
+                    "primary_value": 3.5,
+                    "secondary_value": 1.25,
+                    "values": [2, 3, 4, 5]
+                }, {
+                    "first_name": "Ahmed",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54783/showcrit?crit_assignment_id=744",
+                    "primary_value": 3.5,
+                    "secondary_value": 0.916666667,
+                    "values": [2, 3, 3, 4, 4, 5]
+                }, {
+                    "first_name": "NN",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54820/showcrit?crit_assignment_id=744",
+                    "primary_value": 3.5,
+                    "secondary_value": 1.25,
+                    "values": [2, 3, 4, 5]
+                }, {
+                    "first_name": "Rodnie",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54821/showcrit?crit_assignment_id=744",
+                    "primary_value": 3.5,
+                    "secondary_value": 2.25,
+                    "values": [1, 2, 4, 4, 5, 5]
+                }, {
+                    "first_name": "Bobby",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54718/showcrit?crit_assignment_id=744",
+                    "primary_value": 3.571428571,
+                    "secondary_value": 1.102040816,
+                    "values": [2, 3, 3, 3, 4, 5, 5]
+                }, {
+                    "first_name": "Av",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54872/showcrit?crit_assignment_id=744",
+                    "primary_value": 3.571428571,
+                    "secondary_value": 0.816326531,
+                    "values": [2, 3, 3, 4, 4, 4, 5]
+                }, {
+                    "first_name": "Ag",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54919/showcrit?crit_assignment_id=744",
+                    "primary_value": 3.714285714,
+                    "secondary_value": 0.775510204,
+                    "values": [2, 3, 4, 4, 4, 4, 5]
+                }, {
+                    "first_name": "Ice",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54847/showcrit?crit_assignment_id=744",
+                    "primary_value": 4,
+                    "secondary_value": 0.8,
+                    "values": [3, 3, 4, 5, 5]
+                }, {
+                    "first_name": "Cornie",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54855/showcrit?crit_assignment_id=744",
+                    "primary_value": 4,
+                    "secondary_value": 0.857142857,
+                    "values": [2, 4, 4, 4, 4, 5, 5]
+                }, {
+                    "first_name": "Muhadin",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54784/showcrit?crit_assignment_id=744",
+                    "primary_value": 4.333333333,
+                    "secondary_value": 0.888888889,
+                    "values": [3, 5, 5]
+                }, {
+                    "first_name": "Hassan",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54823/showcrit?crit_assignment_id=744",
+                    "primary_value": 4.4,
+                    "secondary_value": 1.44,
+                    "values": [2, 5, 5, 5, 5]
+                }, {
+                    "first_name": "Britney",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54802/showcrit?crit_assignment_id=744",
+                    "primary_value": 4.6,
+                    "secondary_value": 0.64,
+                    "values": [3, 5, 5, 5, 5]
+                }, {
+                    "first_name": "Duck",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54770/showcrit?crit_assignment_id=744",
+                    "primary_value": 4.666666667,
+                    "secondary_value": 0.555555556,
+                    "values": [3, 5, 5, 5, 5, 5]
+                }, {
+                    "first_name": "Don",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54777/showcrit?crit_assignment_id=744",
+                    "primary_value": 5,
+                    "secondary_value": 0,
+                    "values": [5, 5, 5, 5, 5, 5, 5]
+                }, {
+                    "first_name": "Betsy",
+                    "last_name": "",
+                    "column_url": "/assignments/737/responses/54922/showcrit?crit_assignment_id=744",
+                    "primary_value": 5,
+                    "secondary_value": 0,
+                    "values": [5, 5, 5]
+                }]
+            }]
+            </pre>
+            <p>
+                <button type="button" class="submit-button" onclick="copyToClipboard(document.getElementById('json_example'))">Copy Example</button>
+                &nbsp;
+                <button type="button" class="submit-button" onclick="window.scrollTo(0, 0);">Go up</button>
+            </p>
+        </div>
+        -->
+        <div class="footer">
+            © PeerLogic. All rights reserved.
+            <br/>
+            For support or new feature request, please contact:
+            Dr. Ferry Pramudianto | Senior Research Engineer | 919 513-0816 | fferry (at) ncsu.edu
+            Computer Science Department | North Carolina State University
+        </div>
+    </body>
+</html>

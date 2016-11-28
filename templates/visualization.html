@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+
+<head>
+    <style>
+        rect.bordered {
+            stroke: #E6E6E6;
+            stroke-width: 2px;
+        }
+        
+        text.mono {
+            font-size: 11pt;
+            font-family: Consolas, courier;
+            fill: #000;
+        }
+        
+        text.monoInside {
+            font-size: 12pt;
+            font-family: Consolas, courier;
+            fill: #000;
+        }
+        
+        text.axis-workweek {
+            fill: #000;
+        }
+        
+        text.axis-worktime {
+            fill: #000;
+        }
+        
+        monoInsideDiv {
+            width: 50px;
+            height: 50px;
+            background: rgba(100, 100, 100, 0);
+        }
+        
+        div.tooltip {
+            position: absolute;
+            text-align: center;
+            width: 100px;
+            height: 56px;
+            padding: 10px 2px 2px 2px;
+            font: 16px sans-serif;
+            background: black;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+            color: #fff;
+            font-weight: bold;
+        }
+        
+        .title {
+            font: 22px sans-serif;
+            font-weight: bold;
+        }
+        
+        .transparent {
+            fill: transparent;
+        }
+        
+        .class_h_labels {
+            font-size: 11pt;
+            font-family: Consolas, courier;
+            fill: #000;
+        }
+        
+        .clipped {
+            overflow: hidden;
+        }
+        
+        .protip-skin-default {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        /*
+        .clipped {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+        }
+        
+        .tooltip {
+            font-size: 20px;
+            color: black;
+        }
+*/
+    </style>
+    <script type="text/javascript" src="D3-HeatMap/js/jquery.js"></script>
+    <link rel="stylesheet" href="D3-HeatMap/css/protip.css">
+    <script src="D3-HeatMap/js/protip.js"></script>
+</head>
+
+<body>
+    <div id="parent" style="height: 800px; width: 800px;">
+        <div id="chart"></div>
+    </div>
+    <script type=text/javascript src="D3-HeatMap/bundle.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.protip();
+        });
+    </script>
+</body>
+
+</html>

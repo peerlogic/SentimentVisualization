@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Rainbow Graph for Instructors </title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <link rel="stylesheet" type="text/css" href="static/basic.css">
+    <link rel="stylesheet" type="text/css" href="static/dropzone.css">
+    <script src="static/dropzone.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script>
+        var myDropzone
+        var files_table = {};
+        function deleteUrl(url){
+            id = url.substr(url.lastIndexOf('/') + 1)
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+
+                }
+            }
+            line = '<li type="square"><a href="' + url +'" target="_blank">' + url + '</a><button type="button" class="submit-button" onclick="deleteUrl(\'' + url + '\')">delete</button></li>'
+            document.getElementById('links').innerHTML = document.getElementById('links').innerHTML.replace(line, "")
+            myDropzone.removeFile(files_table[id])
+            
+            xhr.open("DELETE", "viz/" + id, true);
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            xhr.send();
+        }
+
+        Dropzone.autoDiscover = false;
+
+        $(function() {
+          myDropzone = new Dropzone("#uploader", {addRemoveLinks: true});
+          myDropzone.on("success", function(file, file_upload_resp) {
+            document.getElementById('error').innerHTML = ""
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    configure_resp = JSON.parse(xhr.responseText);
+                    file.id = configure_resp.url.substr(configure_resp.url.lastIndexOf('/') + 1)
+                    files_table[file.id] = file
+                    //rename file
+                    var fileuploded = file.previewElement.querySelector("[data-dz-name]");
+                    fileuploded.innerHTML = file.id + "|" + file.name
+                    document.getElementById('links').innerHTML += '<li type="square"><a href="' + configure_resp.url + '" target="_blank" >' + configure_resp.url + '</a><button type="button" class="submit-button" onclick="deleteUrl(\'' + configure_resp.url + '\')">delete</button></li>'
+                }
+            }
+            xhr.open("POST", window.location.href.replace("instructor", "configure"), true);
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            xhr.send(JSON.stringify(file_upload_resp));
+
+          });
+          myDropzone.on("error", function(file, resp){
+              document.getElementById('error').innerHTML = "<h2><font color='red'>" + resp.error + "</font></h2><br>"
+          });
+
+          myDropzone.on("removedfile", function(file, resp) {
+            id = file.id
+            url =  location.protocol + '//' + location.host + "/rainbowgraph/viz/" + id
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                }
+            }
+
+            line = '<li type="square"><a href="' + url +'" target="_blank">' + url + '</a><button type="button" class="submit-button" onclick="deleteUrl(\'' + url + '\')">delete</button></li>'
+            document.getElementById('links').innerHTML = document.getElementById('links').innerHTML.replace(line, "")
+
+            xhr.open("DELETE", "viz/" + id, true);
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            xhr.send();
+          });
+        });
+    </script>
+</head>
+<body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="form-container">
+<h1 class="form-title">The Rainbow Graph</h1>
+<p>
+    <div class="form-title">This page is intended for instructors, <a href="developer">klick here if you are a developer</a></div>
+<p>
+    The Rainbow Graph helps you to visualize peer assessment scores of your class and identify submissions that are scored with high disagreements by their reviewers.
+    This graph is simply a bar graph. Each student is represented by a column, and the height of the column is determined by that student’s “primary-value” entry.
+    Think of “primary-value” as their overall aggregate score. This isn’t calculated by the web service but rather is provided by you.
+
+    Each of these columns consists of a number of smaller elements stacked together. These elements refer to the individual scores that student received from other peers in a peer review session.
+    Some students may have more “values” than other students and that’s OK. The overall column height will always be drawn such that its height corresponds to the “primary-value” provided by you.
+
+    <a href="https://www.peerlogic.org/visualization-rainbowgraph/" target="_blank">Click here to learn more about the Rainbow Graph.</a>
+
+    <br/>
+    <div class="fb-like" data-href="https://www.facebook.com/nsfpeerlogic" data-layout="standard" data-action="like" data-size="small" data-show-faces="false" data-share="true"></div>
+    <br/>
+</p>
+<h2 class="form-title"></h2>
+
+<form action="file-upload" class="dropzone form-container" id="uploader" >
+    <div class="dz-message" data-dz-message>
+        Drop your peer assessment data files here or click to upload them<br>        
+        Currently we support peer assessment data files from the following systems: <br>CPR (*.csv), Perceptive/Sword (*.xls), MobiusSLIP (*.xlsx)<br>
+        If you have other data files that you'd like us to support, please email fferry[at]ncsu.edu<br>
+    </div>
+    <div class="fallback">
+    <input name="file" type="file" multiple />
+  </div>
+</form>
+</div>
+<p>
+<div class="form-container">
+    <div id="error"></div>
+    <h2 class="form-title">Your Rainbow Graph can be accessed through the following URLs</h2>
+    <ul>
+        <div id="links"></div>
+    </ul>
+</div>
+<div class="footer">
+    © PeerLogic. All rights reserved.
+    <br/>
+    For support or new feature request, please contact:
+    Dr. Ferry Pramudianto | Senior Research Engineer | 919 513-0816 | fferry (at) ncsu.edu
+    Computer Science Department | North Carolina State University
+</div>
+</body>
+</html>

@@ -1,0 +1,173 @@
+            {
+                "v_labels": ["Reviewer 1", "Reviewer 2", "Reviewer 3", "Reviewer 4"
+                    , "Reviewer 5", "Reviewer 6"
+                ]
+                , "h_labels": ["Submission 1", "Submission 2", "Submission 3", "Submission 4"
+                    , "Submission 5", "Submission 6", "Submission 7"
+                ]
+                , "font-size": 12
+                , "font-face": "Arial"
+                , "showTextInsideBoxes": false
+                , "showCustomColorScheme": false
+                , "tooltipColorScheme": "black"
+                , "custom_color_scheme": {
+                    "minimum_value": -1
+                    , "maximum_value": 1
+                    , "minimum_color": "#FFFF00"
+                    , "maximum_color": "#FF0000"
+                    , "total_intervals": 5
+                }
+                , "color_scheme": {
+                    "ranges": [{
+                        "minimum": -1
+                        , "maximum": -0.5
+                        , "color": "#E74C3C"
+                    }, {
+                        "minimum": -0.5
+                        , "maximum": 0
+                        , "color": "#F1948A"
+                    }, {
+                        "minimum": 0
+                        , "maximum": 0.5
+                        , "color": "#82E0AA"
+                    }, {
+                        "minimum": 0.5
+                        , "maximum": 1
+                        , "color": "#229954"
+                    }]
+                }
+                , "content": [
+                    [{
+                        "value": -0.99
+                        , "text": "1 Test for lengthy text, Test for lengthy text, Test for lengthy text, Test for lengthy text, , Test for lengthy text, Test for lengthy text, Test for lengthy text, Test for lengthy text, Test for lengthy text, Test for lengthy text, Test for lengthy text 1"
+                    }, {
+                        "value": -0.9
+                        , "text": "Test for lengthy text, "
+                    }, {
+                        "value": -0.85
+                        , "text": "10"
+                    }, {
+                        "value": -0.8
+                        , "text": "15551t"
+                    }, {
+                        "value": -0.65
+                        , "text": "25"
+                    }, {
+                        "value": -0.55
+                        , "text": "30"
+                    }, {
+                        "value": -0.5
+                        , "text": "34"
+                    }]
+                    , [{
+                        "value": -0.49
+                        , "text": "2 Test for lengthy text, Test for lengthy text, Test for lengthy text, Test for lengthy text, , Test for lengthy text, Test for lengthy text, Test for lengthy text, Test for lengthy text, Test for lengthy text 2"
+                    }, {
+                        "value": -0.43
+                        , "text": "37"
+                    }, {
+                        "value": -0.35
+                        , "text": "40"
+                    }, {
+                        "value": -0.25
+                        , "text": "42"
+                    }, {
+                        "value": -0.1
+                        , "text": "45"
+                    }, {
+                        "value": -0.05
+                        , "text": "47"
+                    }, {
+                        "value": 0
+                        , "text": "50"
+                    }]
+                    , [{
+                        "value": 0
+                        , "text": "3 Test for lengthy text, Test for lengthy text 3"
+                    }, {
+                        "value": 0.01
+                        , "text": "52"
+                    }, {
+                        "value": 0.02
+                        , "text": "53"
+                    }, {
+                        "value": 0.03
+                        , "text": "54"
+                    }, {
+                        "value": 0.04
+                        , "text": "55"
+                    }, {
+                        "value": 0.07
+                        , "text": "56"
+                    }, {
+                        "value": 0.09
+                        , "text": "59"
+                    }]
+                    , [{
+                        "value": 0.1
+                        , "text": "Test for lengthy text, Test for lengthy text, Test for lengthy text, Test for lengthy text, "
+                    }, {
+                        "value": 0.2
+                        , "text": "61"
+                    }, {
+                        "value": 0.26
+                        , "text": "62.5"
+                    }, {
+                        "value": 0.35
+                        , "text": "67"
+                    }, {
+                        "value": 0.4
+                        , "text": "70"
+                    }, {
+                        "value": 0.45
+                        , "text": "72"
+                    }, {
+                        "value": 0.5
+                        , "text": "75"
+                    }]
+                    , [{
+                        "value": 0.51
+                        , "text": "Test for lengthy text, Test for lengthy text, Test for lengthy text, Test for lengthy text, "
+                    }, {
+                        "value": 0.6
+                        , "text": "78"
+                    }, {
+                        "value": 0.67
+                        , "text": "80"
+                    }, {
+                        "value": 0.75
+                        , "text": "82"
+                    }, {
+                        "value": 0.85
+                        , "text": "85"
+                    }, {
+                        "value": 0.93
+                        , "text": "87"
+                    }, {
+                        "value": 0.99
+                        , "text": "94"
+                    }]
+                    , [{
+                        "value": -0.53
+                        , "text": "Test for lengthy text, Test for lengthy text, Test for lengthy text, Test for lengthy text, "
+                    }, {
+                        "value": 0.5
+                        , "text": "73"
+                    }, {
+                        "value": 1
+                        , "text": "100"
+                    }, {
+                        "value": -1
+                        , "text": "0"
+                    }, {
+                        "value": -0.25
+                        , "text": "37"
+                    }, {
+                        "value": -0.75
+                        , "text": "12"
+                    }, {
+                        "value": 0
+                        , "text": "50"
+                    }]
+                ]
+            }

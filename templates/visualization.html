@@ -88,18 +88,21 @@
         }
 */
     </style>
-    <script type="text/javascript" src="D3-HeatMap/js/jquery.js"></script>
-    <link rel="stylesheet" href="D3-HeatMap/css/protip.css">
-    <script src="D3-HeatMap/js/protip.js"></script>
+    <script type="text/javascript" src="/static/jquery.js"></script>
+    <link rel="stylesheet" href="/static/protip.css">
+    <script src="/static/protip.js"></script>
+    <script type=text/javascript src="/static/bundle.js"></script>
 </head>
 
 <body>
     <div id="parent" style="height: 800px; width: 800px;">
         <div id="chart"></div>
     </div>
-    <script type=text/javascript src="D3-HeatMap/bundle.js"></script>
     <script type="text/javascript">
+
         $(document).ready(function () {
+            jsonData = JSON.parse({{ json_data|tojson|safe }});
+            visualizeJsonData (jsonData);
             $.protip();
         });
     </script>

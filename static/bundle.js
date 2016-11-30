@@ -76,7 +76,10 @@ function get_color_ranges_from_custom_scheme(color_scheme) {
     console.log(ranges)
     return ranges;
 }
-$.getJSON("data.json", function (data) {
+
+//$.getJSON("data.json", parseJsonData);
+
+window.visualizeJsonData = function(data) {
     jsonData = data;
     h_labels = data.h_labels;
     v_labels = data.v_labels;
@@ -110,7 +113,7 @@ $.getJSON("data.json", function (data) {
         }
     }
     loadChart(data);
-});
+}
 
 function getRangeWhereMinimumIs(value, color_ranges) {
     for (var i = 0; i < color_ranges.length; i++) {

@@ -57,7 +57,8 @@
 
           myDropzone.on("removedfile", function(file, resp) {
             id = file.id
-            url =  location.protocol + '//' + location.host + "/rainbowgraph/viz/" + id
+            //url =  location.protocol + '//' + location.host + "/rainbowgraph/viz/" + id
+            url =  location.protocol + '//' + location.host + ":3008/viz/" + id
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4) {

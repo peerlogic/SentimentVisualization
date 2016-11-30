@@ -6,11 +6,14 @@ import json
 import xlrd
 import numpy as np
 import csv
+from BeautifulSoup import BeautifulSoup
+
+import requests
+
 import logging
 
 import sqlite3 as sqllite
 import sys
-
 
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 
@@ -53,11 +56,122 @@ def setup_sql_lite_db():
         print "Error %s:" % e.args[0]
         sys.exit(1)
 
+def initialize_metadata():
+    metadata = {
+        'v_labels': [],
+        'h_labels': [],
+        'font-size': 12,
+        'font-face': 'Arial',
+        'showTextInsideBoxes': True,
+        'showCustomColorScheme': False,
+        'tooltipColorScheme': 'black',
+        "color_scheme": {
+            "ranges": [{
+                "minimum": -1,
+                "maximum": -0.5,
+                "color": "#E74C3C"
+            }, {
+                "minimum": -0.5,
+                "maximum": 0,
+                "color": "#F1948A"
+            }, {
+                "minimum": 0,
+                "maximum": 0.5,
+                "color": "#82E0AA"
+            }, {
+                "minimum": 0.5,
+                "maximum": 1,
+                "color": "#229954"
+            }]
+        },
+        "content":[]
+    }
+
+    return metadata
+
+
+def get_sentiment(text):
+    url = 'http://localhost:3008/analyze_review'
+    if len(text) > 0:
+        response = requests.post(url, json={"review" : text})
+        return requests.post(url, json={"review":text}).json()["overall_compound"]
+    else:
+        return 0
+
+def parse_csv(file):
+    #log the headers
+    header1 = file.readline()
+    header2 = file.readline()
+    instructor_logger.info(header1)
+    instructor_logger.info(header2)
+
+    #check if this is CPR data file
+    if "Assignment =" in header1 and "Time =" in header2:
+        metadata = initialize_metadata()
+
+        #read the file
+        reader = csv.reader(file, dialect="excel")
+        cpr_data = list(reader)
+
+        #find the last row in this file. CPR data file is inconsistent it may contain empty fields.
+        last_row = len(cpr_data[0])
+        for i in range(len(cpr_data[0])-1,0, -1):
+            if cpr_data[0][i] == '':
+                last_row-=1;
+            else:
+                break
+
+        comment_cols = []
+        h_labels = []
+        #find the comment cols in this file.
+        for i in range(6, last_row):
+            if 'Explanation' in cpr_data[0][i]:
+                comment_cols.append(i)
+                h_labels.append(cpr_data[0][i])
+
+        metadata["h_labels"] = h_labels
+
+        v_labels = []
+        content = []
+        for row in range(1, len(cpr_data)):
+            author_id = cpr_data[row][0]
+            author_name = cpr_data[row][2]
+            reviewer = cpr_data[row][4]
+            cpi = cpr_data[row][5]
+
+            #this is a self review row, we should skip this for now
+            if reviewer == "":
+                continue
+
+            v_labels.append(author_name + " <- " + reviewer)
+
+            row_content = []
+            for i in range(0, len(comment_cols)):
+                #insert cell in a row
+                c={}
+                c['text'] = BeautifulSoup(cpr_data[row][comment_cols[i]]).text
+                c['value'] = get_sentiment(c['text'])
+                #logging.debug("comment: " + c['comment']+ " SA:" + str(c['value']))
+                row_content.append(c)
+            #insert each row
+            content.append(row_content)
+
+        metadata["v_labels"] = v_labels
+        metadata["content"] = content
+
+        return metadata
+
+def parse_xls(file):
+    return None
+
+def parse_xlsx(file):
+    return None
+
+
 @app.route('/')
 def index():
     return redirect('developer')
 
-#TODO refactor exctract each file processing to a method
 @app.route('/file-upload', methods=['POST'])
 @cross_origin()
 def file_upload():
@@ -65,17 +179,16 @@ def file_upload():
 
     #check type of the files, find a way to check the header
     if file.filename.endswith(".csv"):
-
+        config = parse_csv(file)
     elif file.filename.endswith(".xls"):
-
+        config = parse_xls(file)
     elif file.filename.endswith(".xlsx"):
-
+        config = parse_xlsx(file)
     else:
         debug_logger.error("someone uploaded unknown file (" + file.filename + ")" )
         return jsonify(error="Uploaded file is currently not supported"), status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
 
-
-    return jsonify([config]), status.HTTP_200_OK
+    return jsonify(config), status.HTTP_200_OK
 
 @app.route('/instructor', methods=['GET'])
 @cross_origin()
@@ -96,11 +209,13 @@ def configure():
     # generate id
     id = uuid.uuid4();
 
-    cur.execute("INSERT INTO Config (id, json ) VALUES('" + str(id) + "', '" + json.dumps(request.json) + "')")
+    query = "INSERT INTO Config (id, json ) VALUES(?, ?)"
+    cur.execute(query, (str(id), json.dumps(request.json)))
+
     con.commit()
 
     #return jsonify(url="http://peerlogic.csc.ncsu.edu/rainbowgraph/viz/" + id.urn[9:])
-    return jsonify(url="http://127.0.0.1:3008/viz/" + id.urn[9:])
+    return jsonify(url="http://127.0.0.1:3009/viz/" + id.urn[9:])
 
 @app.route('/viz/<id>', methods=['GET', 'DELETE'])
 @cross_origin()
@@ -123,5 +238,5 @@ def visualize(id):
 
 if __name__ == '__main__':
     setup_sql_lite_db()
-    app.run(host='127.0.0.1', port=3005, threaded=True)
-    #app.run(host='0.0.0.0', port=3008, threaded=True)
+    app.run(host='127.0.0.1', port=3009, threaded=True)
+    #app.run(host='0.0.0.0', port=3009, threaded=True)

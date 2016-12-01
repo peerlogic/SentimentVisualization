@@ -93,8 +93,14 @@ def initialize_metadata():
 def get_sentiment(text):
     url = 'http://localhost:3008/analyze_review'
     if len(text) > 0:
-        response = requests.post(url, json={"review" : text})
         return requests.post(url, json={"review":text}).json()["overall_compound"]
+    else:
+        return 0
+
+def get_sentiment_bulk(reviews):
+    url = 'http://localhost:3008/analyze_review'
+    if len(reviews) > 0:
+       return requests.post(url, json={"review":reviews}).json()["overall_compound"]
     else:
         return 0
 
@@ -133,6 +139,11 @@ def parse_csv(file):
 
         v_labels = []
         content = []
+
+
+        sentiment_request = []
+
+
         for row in range(1, len(cpr_data)):
             author_id = cpr_data[row][0]
             author_name = cpr_data[row][2]
@@ -143,18 +154,21 @@ def parse_csv(file):
             if reviewer == "":
                 continue
 
-            v_labels.append(author_name + " <- " + reviewer)
+            v_labels.append(author_name)
 
             row_content = []
             for i in range(0, len(comment_cols)):
                 #insert cell in a row
                 c={}
                 c['text'] = BeautifulSoup(cpr_data[row][comment_cols[i]]).text
-                c['value'] = get_sentiment(c['text'])
+                sentiment_request.append(c['text'])
+                c['value'] = 0
                 #logging.debug("comment: " + c['comment']+ " SA:" + str(c['value']))
                 row_content.append(c)
             #insert each row
             content.append(row_content)
+
+        sentiments = get_sentiment_bulk(sentiment_request)
 
         metadata["v_labels"] = v_labels
         metadata["content"] = content

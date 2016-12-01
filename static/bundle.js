@@ -427,10 +427,9 @@ function loadChart(data, expandedColumn = h_labels.length + 1) {
             size = $("#chart").parent().width() / 60;
             if(fontSize != undefined)
                 size = fontSize;
-            else
-                if (size < 15) {
+            else if (size < 15) {
                     size = 15;
-                }
+            }
             for (i = 0; i < cols.length; i++) {
                 cols[i].style.fontSize = size + "px";
             }

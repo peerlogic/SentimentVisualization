@@ -7,13 +7,13 @@ import xlrd
 import numpy as np
 import csv
 from BeautifulSoup import BeautifulSoup
-
 import requests
-
 import logging
-
 import sqlite3 as sqllite
 import sys
+
+
+SENTIMENT_WS_URL = "http://peerlogic.csc.ncsu.edu/sentiment"
 
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 
@@ -29,7 +29,7 @@ debug_logger = logging.getLogger('debug_logger')
 hdlr_2 = logging.FileHandler('debug.log')
 hdlr_2.setFormatter(formatter)
 debug_logger.addHandler(hdlr_2)
-debug_logger.setLevel(logging.DEBUG)
+debug_logger.setLevel(logging.ERROR)
 
 app = Flask(__name__)
 CORS(app)
@@ -91,14 +91,14 @@ def initialize_metadata():
 
 
 def get_sentiment(text):
-    url = 'http://localhost:3008/analyze_review'
+    url = SENTIMENT_WS_URL + '/analyze_review'
     if len(text) > 0:
         return requests.post(url, json={"review":text}).json()["overall_compound"]
     else:
         return 0
 
 def get_sentiment_bulk(reviews):
-    url = 'http://localhost:3008/analyze_reviews_bulk'
+    url = SENTIMENT_WS_URL + '/analyze_reviews_bulk'
     if len(reviews) > 0:
         return requests.post(url, json={"reviews":reviews}).json()["sentiments"]
     else:
@@ -179,8 +179,8 @@ def parse_csv(file):
             row_col = s['id'].split("_")
             row = int(row_col[0])
             col = int(row_col[1])
-            debug_logger.debug("row:" + row_col[0] + " col:" + row_col[1])
-            debug_logger.debug("len_row:" + str(len(content)) + " len_col:" + str(len(content[row])))
+            #debug_logger.debug("row:" + row_col[0] + " col:" + row_col[1])
+            #debug_logger.debug("len_row:" + str(len(content)) + " len_col:" + str(len(content[row])))
             content[row][col]['value'] = s['sentiment']
 
         metadata["v_labels"] = v_labels
@@ -189,6 +189,7 @@ def parse_csv(file):
         return metadata
 
 def parse_xls(file):
+
     return None
 
 def parse_xlsx(file):
@@ -241,8 +242,8 @@ def configure():
 
     con.commit()
 
-    #return jsonify(url="http://peerlogic.csc.ncsu.edu/rainbowgraph/viz/" + id.urn[9:])
-    return jsonify(url="http://127.0.0.1:3009/viz/" + id.urn[9:])
+    return jsonify(url="http://peerlogic.csc.ncsu.edu/reviewsentiment/viz/" + id.urn[9:])
+    #return jsonify(url="http://127.0.0.1:3009/viz/" + id.urn[9:])
 
 @app.route('/viz/<id>', methods=['GET', 'DELETE'])
 @cross_origin()
@@ -265,5 +266,5 @@ def visualize(id):
 
 if __name__ == '__main__':
     setup_sql_lite_db()
-    app.run(host='127.0.0.1', port=3009, threaded=True)
-    #app.run(host='0.0.0.0', port=3009, threaded=True)
+    #app.run(host='127.0.0.1', port=3009, threaded=True)
+    app.run(host='0.0.0.0', port=3009, threaded=True)

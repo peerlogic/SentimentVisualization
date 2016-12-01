@@ -29,7 +29,7 @@ debug_logger = logging.getLogger('debug_logger')
 hdlr_2 = logging.FileHandler('debug.log')
 hdlr_2.setFormatter(formatter)
 debug_logger.addHandler(hdlr_2)
-debug_logger.setLevel(logging.ERROR)
+debug_logger.setLevel(logging.DEBUG)
 
 app = Flask(__name__)
 CORS(app)
@@ -67,7 +67,7 @@ def initialize_metadata():
         'tooltipColorScheme': 'black',
         "color_scheme": {
             "ranges": [{
-                "minimum": -1,
+                "minimum": -1.5,
                 "maximum": -0.5,
                 "color": "#E74C3C"
             }, {
@@ -80,7 +80,7 @@ def initialize_metadata():
                 "color": "#82E0AA"
             }, {
                 "minimum": 0.5,
-                "maximum": 1,
+                "maximum": 1.5,
                 "color": "#229954"
             }]
         },
@@ -98,11 +98,11 @@ def get_sentiment(text):
         return 0
 
 def get_sentiment_bulk(reviews):
-    url = 'http://localhost:3008/analyze_review'
+    url = 'http://localhost:3008/analyze_reviews_bulk'
     if len(reviews) > 0:
-       return requests.post(url, json={"review":reviews}).json()["overall_compound"]
+        return requests.post(url, json={"reviews":reviews}).json()["sentiments"]
     else:
-        return 0
+        return []
 
 def parse_csv(file):
     #log the headers
@@ -143,7 +143,7 @@ def parse_csv(file):
 
         sentiment_request = []
 
-
+        j = 0
         for row in range(1, len(cpr_data)):
             author_id = cpr_data[row][0]
             author_name = cpr_data[row][2]
@@ -161,14 +161,27 @@ def parse_csv(file):
                 #insert cell in a row
                 c={}
                 c['text'] = BeautifulSoup(cpr_data[row][comment_cols[i]]).text
-                sentiment_request.append(c['text'])
                 c['value'] = 0
+
+                req ={}
+                req['text'] = c['text']
+                req['id'] = "" + str(j) + "_" + str(i) + ""
+                sentiment_request.append(req)
                 #logging.debug("comment: " + c['comment']+ " SA:" + str(c['value']))
                 row_content.append(c)
             #insert each row
             content.append(row_content)
+            j += 1
 
         sentiments = get_sentiment_bulk(sentiment_request)
+
+        for s in sentiments:
+            row_col = s['id'].split("_")
+            row = int(row_col[0])
+            col = int(row_col[1])
+            debug_logger.debug("row:" + row_col[0] + " col:" + row_col[1])
+            debug_logger.debug("len_row:" + str(len(content)) + " len_col:" + str(len(content[row])))
+            content[row][col]['value'] = s['sentiment']
 
         metadata["v_labels"] = v_labels
         metadata["content"] = content

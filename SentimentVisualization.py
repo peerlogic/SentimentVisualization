@@ -242,8 +242,8 @@ def configure():
 
     con.commit()
 
-    return jsonify(url="http://peerlogic.csc.ncsu.edu/reviewsentiment/viz/" + id.urn[9:])
-    #return jsonify(url="http://127.0.0.1:3009/viz/" + id.urn[9:])
+    #return jsonify(url="http://peerlogic.csc.ncsu.edu/reviewsentiment/viz/" + id.urn[9:])
+    return jsonify(url="http://127.0.0.1:3009/viz/" + id.urn[9:])
 
 @app.route('/viz/<id>', methods=['GET', 'DELETE'])
 @cross_origin()

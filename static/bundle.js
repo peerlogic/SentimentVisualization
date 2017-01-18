@@ -13,8 +13,8 @@ var margin = {
         , left: $("#chart").parent().width() / 6
             //left: 0
     }
-    , width = $("#chart").parent().width() - margin.left - margin.right
-    , height = $("#chart").parent().height() - margin.top - margin.bottom
+    , width = $("#chart").parent().width()
+    , height = $("#chart").parent().height()
     , gridWidth = 0
     , gridHeight = 0
     , total_legendWidth = 0
@@ -159,8 +159,8 @@ function reloadExpandedChart(number) {
 function loadChart(data, expandedColumn = h_labels.length + 1) {
     $(".protip-container").remove();
     tooltiColorScheme = data.tooltipColorScheme;
-    expandedColumnWidth = gridWidth * h_labels.length * 0.4;
-    contractedColumnWidth = gridWidth * h_labels.length * 0.6 / (h_labels.length - 1);
+    expandedColumnWidth = gridWidth * h_labels.length * 0.6;
+    contractedColumnWidth = gridWidth * h_labels.length * 0.4 / (h_labels.length - 1);
     d3.select("svg").remove();
     var svg = d3.select("#chart").append("svg").attr("width", width + margin.left).attr("height", height + margin.top).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     // Define the div for the tooltip

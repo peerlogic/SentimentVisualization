@@ -11,9 +11,13 @@ import requests
 import logging
 import sqlite3 as sqllite
 import sys
-
+import yaml
 
 SENTIMENT_WS_URL = "http://peerlogic.csc.ncsu.edu/sentiment"
+global cfg
+with open("config_file.yml", 'r') as ymlfile:
+    cfg = yaml.load(ymlfile)
+
 
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 
@@ -89,7 +93,6 @@ def initialize_metadata():
 
     return metadata
 
-
 def get_sentiment(text):
     url = SENTIMENT_WS_URL + '/analyze_review'
     if len(text) > 0:
@@ -104,15 +107,19 @@ def get_sentiment_bulk(reviews):
     else:
         return []
 
+#only CPR format is supported
 def parse_csv(file):
     #log the headers
     header1 = file.readline()
     header2 = file.readline()
-    instructor_logger.info(header1)
-    instructor_logger.info(header2)
+
 
     #check if this is CPR data file
     if "Assignment =" in header1 and "Time =" in header2:
+        #log this upload
+        instructor_logger.info(header1)
+        instructor_logger.info(header2)
+
         metadata = initialize_metadata()
 
         #read the file
@@ -129,6 +136,7 @@ def parse_csv(file):
 
         comment_cols = []
         h_labels = []
+
         #find the comment cols in this file.
         for i in range(6, last_row):
             if 'Explanation' in cpr_data[0][i]:
@@ -188,11 +196,87 @@ def parse_csv(file):
 
         return metadata
 
+#only SWORD/Perceptive format is supported
 def parse_xls(file):
+
+    book = xlrd.open_workbook(file_contents=file.read())
+    data_sheet = book.sheet_by_index(0)
+    reviewer_col = 1
+    dimension_name_col = 2
+    comment_id_col = 3
+    comment_col = 5
+    backeval_col = 6
+
+    #log the headers
+    i = 0
+    while True:
+        first_cell = data_sheet.cell(i,0).value
+        if first_cell != "":
+            instructor_logger.info(first_cell)
+        elif "Paper Author" in first_cell:
+            #i+=1
+            j = 0
+            for row in range(i, data_sheet.nrows):
+                if data_sheet.cell(i,j).value == "Reviewer":
+                    reviewer_col = j
+                elif data_sheet.cell(i,j).value == "Dimension name":
+                    dimension_name_col = j
+                elif data_sheet.cell(i,j).value == "Comment ID":
+                    comment_id_col = j
+                elif data_sheet.cell(i,j).value == "Comment Content":
+                    comment_col = j
+                elif data_sheet.cell(i,j).value == "BackEval Comment":
+                    backeval_col = j
+                j+=1
+            break;
+        elif i >= data_sheet.nrows:
+            instructor_logger.info("unsupported data is uploaded")
+            return None
+        i+=1
+
+    metadata = initialize_metadata()
+
+    prev_reviewer = ""
+    prev_comment_id = ""
+    aggregated_comment = ""
+    dimensions = {}
+    sa_request = []
+    # i now is the index of the first data, iterate to the end of the data sheet
+    for row in range(i, data_sheet.nrows):
+        author = data_sheet.cell(row, 0).value
+        reviewer = data_sheet.cell(row, reviewer_col).value
+        dimension_name = data_sheet.cell(row, dimension_name_col).value
+        comment_id = data_sheet.cell(row, comment_id_col).value
+        comment = data_sheet.cell(row, comment_col).value
+        backeval = data_sheet.cell(row, backeval_col).value
+
+        if prev_reviewer == reviewer:
+            #start process new dimension
+            if prev_comment_id == comment_id:
+                aggregated_comment += comment
+            else:
+                if aggregated_comment != "":
+                    dict = {'Id': comment_id, 'text':aggregated_comment}
+                    sa_request.append(dict)
+                dimensions[comment_id] = dimension_name
+        else:
+            #analyze sentiment
+            if len(sa_request) > 0:
+                sentiments = get_sentiment_bulk(sa_request)
+
+                #map the tone to json and reset the request variable
+                sa_request = []
+
+
+
+
+
+
 
     return None
 
 def parse_xlsx(file):
+
     return None
 
 
@@ -242,7 +326,7 @@ def configure():
 
     con.commit()
 
-    return jsonify(url="http://peerlogic.csc.ncsu.edu/reviewsentiment/viz/" + id.urn[9:])
+    return jsonify(url=cfg['SERVER_URL']+ "/viz/" + id.urn[9:])
     #return jsonify(url="http://127.0.0.1:3009/viz/" + id.urn[9:])
 
 @app.route('/viz/<id>', methods=['GET', 'DELETE'])

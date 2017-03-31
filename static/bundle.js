@@ -156,6 +156,30 @@ function reloadExpandedChart(number) {
     loadChart(jsonData, number)
 }
 
+function wrap(text, width) {
+  text.each(function() {
+    var text = d3.select(this),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.1, // ems
+        y = text.attr("y"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+    while (word = words.pop()) {
+      line.push(word);
+      tspan.text(line.join(" "));
+      if (tspan.node().getComputedTextLength() > width) {
+        line.pop();
+        tspan.text(line.join(" "));
+        line = [word];
+        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+      }
+    }
+  });
+}
+
 function loadChart(data, expandedColumn = h_labels.length + 1) {
     $(".protip-container").remove();
     tooltiColorScheme = data.tooltipColorScheme;
@@ -169,9 +193,9 @@ function loadChart(data, expandedColumn = h_labels.length + 1) {
         return d;
     }).attr("x", 0).attr("y", function (d, i) {
         return i * gridHeight;
-    }).style("text-anchor", "end").style("margin-right", "5px").attr("transform", "translate(-8," + gridHeight / 1.5 + ")").attr("class", function (d, i) {
+    }).attr("dy", -2.5).style("margin-right", "5px").attr("transform", "translate(-8," + gridHeight / 1.5 + ")").attr("class", function (d, i) {
         return ((i >= 0 && i <= h_labels.length) ? "courseLabel mono axis axis-workweek" : "courseLabel mono axis");
-    });
+    }).call(wrap, 15).style("text-anchor", "end");
     var x = d3.scale.linear().domain([
         0, gridWidth * h_labels.length
     ]).range([

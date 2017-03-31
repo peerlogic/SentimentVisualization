@@ -12,8 +12,9 @@ import logging
 import sqlite3 as sqllite
 import sys
 import yaml
+import json
 
-SENTIMENT_WS_URL = "http://peerlogic.csc.ncsu.edu/sentiment"
+# load config file
 global cfg
 with open("config_file.yml", 'r') as ymlfile:
     cfg = yaml.load(ymlfile)
@@ -94,14 +95,14 @@ def initialize_metadata():
     return metadata
 
 def get_sentiment(text):
-    url = SENTIMENT_WS_URL + '/analyze_review'
+    url = cfg['SENTIMENT_WS_URL'] + '/analyze_review'
     if len(text) > 0:
         return requests.post(url, json={"review":text}).json()["overall_compound"]
     else:
         return 0
 
 def get_sentiment_bulk(reviews):
-    url = SENTIMENT_WS_URL + '/analyze_reviews_bulk'
+    url = cfg['SENTIMENT_WS_URL'] + '/analyze_reviews_bulk'
     if len(reviews) > 0:
         return requests.post(url, json={"reviews":reviews}).json()["sentiments"]
     else:
@@ -168,7 +169,7 @@ def parse_csv(file):
             for i in range(0, len(comment_cols)):
                 #insert cell in a row
                 c={}
-                c['text'] = BeautifulSoup(cpr_data[row][comment_cols[i]]).text
+                c['text'] = json.dumps(BeautifulSoup(cpr_data[row][comment_cols[i]]).text.rstrip())
                 c['value'] = 0
 
                 req ={}
@@ -213,10 +214,11 @@ def parse_xls(file):
         first_cell = data_sheet.cell(i,0).value
         if first_cell != "":
             instructor_logger.info(first_cell)
-        elif "Paper Author" in first_cell:
-            #i+=1
+
+        # assume the first column of SWORD data is started with Author
+        if "Paper Author" == first_cell:
             j = 0
-            for row in range(i, data_sheet.nrows):
+            for row in range(i, data_sheet.ncols):
                 if data_sheet.cell(i,j).value == "Reviewer":
                     reviewer_col = j
                 elif data_sheet.cell(i,j).value == "Dimension name":
@@ -228,20 +230,28 @@ def parse_xls(file):
                 elif data_sheet.cell(i,j).value == "BackEval Comment":
                     backeval_col = j
                 j+=1
+            i+=1
             break;
         elif i >= data_sheet.nrows:
-            instructor_logger.info("unsupported data is uploaded")
+            debug_logger.info("unsupported data is uploaded, can't find \"Paper Author\" title in the 1st column and all rows")
             return None
         i+=1
 
     metadata = initialize_metadata()
-
+    prev_dimension_name = ""
     prev_reviewer = ""
+    prev_author = ""
     prev_comment_id = ""
     aggregated_comment = ""
     dimensions = {}
     sa_request = []
+    v_labels = []
+    content = []
+    sentiments = {}
+
     # i now is the index of the first data, iterate to the end of the data sheet
+    new_row_index = 0
+    comment_no = 1
     for row in range(i, data_sheet.nrows):
         author = data_sheet.cell(row, 0).value
         reviewer = data_sheet.cell(row, reviewer_col).value
@@ -250,30 +260,55 @@ def parse_xls(file):
         comment = data_sheet.cell(row, comment_col).value
         backeval = data_sheet.cell(row, backeval_col).value
 
-        if prev_reviewer == reviewer:
-            #start process new dimension
-            if prev_comment_id == comment_id:
-                aggregated_comment += comment
-            else:
-                if aggregated_comment != "":
-                    dict = {'Id': comment_id, 'text':aggregated_comment}
-                    sa_request.append(dict)
-                dimensions[comment_id] = dimension_name
+        if author == "" and reviewer == "":
+            continue
+
+        # aggregate comments addressed for a dimenstion
+        if prev_comment_id == comment_id:
+            comment_no += 1
+            aggregated_comment += " [" + str(comment_no) + "] " + BeautifulSoup(comment, convertEntities=BeautifulSoup.HTML_ENTITIES).text.rstrip()
+        # this must be the first row with a comment, store the first comment
+        elif prev_comment_id == "":
+            aggregated_comment = " [" + str(comment_no) + "] " + BeautifulSoup(comment, convertEntities=BeautifulSoup.HTML_ENTITIES).text.rstrip()
+        # we find a different dimension, add the previous one to sa_request
         else:
-            #analyze sentiment
+            comment_no = 1
+            if aggregated_comment != "":
+                dict = {'id': prev_comment_id, 'text':json.dumps(aggregated_comment.replace("\r\n",""))[1:-1]}
+                sa_request.append(dict)
+            dimensions[prev_comment_id] = prev_dimension_name
+            aggregated_comment = "[" + str(comment_no) + "] " + BeautifulSoup(comment, convertEntities=BeautifulSoup.HTML_ENTITIES).text.rstrip()
+
+
+        # we find another reviewer-reviewee pair, get the sentiment value for the previous ones.
+        if (prev_reviewer != reviewer or prev_author != author) and (prev_reviewer != "" and prev_author != ""):
+            # analyze sentiment
             if len(sa_request) > 0:
                 sentiments = get_sentiment_bulk(sa_request)
+            # reset the request variable
+            sa_request = []
+            # add this review to v_label
+            v_labels.append(prev_reviewer + " -reviews-> " + prev_author)
+            # map the tone to json
+            new_row = [None] * len(sentiments)
+            for s in sentiments:
+                #debug_logger.debug("row:" + row_col[0] + " col:" + row_col[1])
+                #debug_logger.debug("len_row:" + str(len(content)) + " len_col:" + str(len(content[row])))
+                col = dimensions.keys().index(s['id'])
+                new_row[col] = {'value':s['sentiment'], 'text':s['text']}
+            content.append(new_row)
 
-                #map the tone to json and reset the request variable
-                sa_request = []
+        prev_comment_id = comment_id
+        prev_reviewer = reviewer
+        prev_dimension_name = dimension_name
+        prev_author = author
+        new_row_index += 1
 
+    metadata["v_labels"] = v_labels
+    metadata["h_labels"] = dimensions.values()
+    metadata["content"] = content
 
-
-
-
-
-
-    return None
+    return metadata
 
 def parse_xlsx(file):
 
@@ -327,7 +362,6 @@ def configure():
     con.commit()
 
     return jsonify(url=cfg['SERVER_URL']+ "/viz/" + id.urn[9:])
-    #return jsonify(url="http://127.0.0.1:3009/viz/" + id.urn[9:])
 
 @app.route('/viz/<id>', methods=['GET', 'DELETE'])
 @cross_origin()

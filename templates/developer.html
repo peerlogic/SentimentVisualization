@@ -15,8 +15,8 @@
                     if (xhr.readyState == 4) {
                        resp = JSON.parse(xhr.responseText);
                        document.getElementById('links').innerHTML += '<li type="square">'
-                               + '<a href="' + resp.url +'" target="_blank" >' + resp.url + '</a>'
-                                + '</a><button type="button" class="submit-button" onclick="deleteUrl(\'' + resp.url + '\')">delete</button></li>';
+                               + '<a href="' + resp.url +'?width=1000&height=1500" target="_blank" >' + resp.url + '</a>'
+                                + '</a><button type="button" class="submit-button" onclick="deleteUrl(\'' + resp.url + '?width=1000&height=1500' +'\')">delete</button></li>';
                     }
                 }
                 xhr.open(input_form.method, window.location.href.replace("developer", "configure") , true);

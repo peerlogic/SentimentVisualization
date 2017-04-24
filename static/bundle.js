@@ -196,6 +196,7 @@ function loadChart(data, expandedColumn = h_labels.length + 1) {
     }).attr("dy", -2.5).style("margin-right", "5px").attr("transform", "translate(-8," + gridHeight / 1.5 + ")").attr("class", function (d, i) {
         return ((i >= 0 && i <= h_labels.length) ? "courseLabel mono axis axis-workweek" : "courseLabel mono axis");
     }).call(wrap, 15).style("text-anchor", "end");
+
     var x = d3.scale.linear().domain([
         0, gridWidth * h_labels.length
     ]).range([
@@ -214,7 +215,14 @@ function loadChart(data, expandedColumn = h_labels.length + 1) {
     var xAxis = d3.svg.axis(x).tickValues(x_ticks).tickFormat(function (d, i) {
         return h_labels[i];
     });
-    svg.append("g").attr("class", "x axis").call(xAxis).selectAll("text").attr("class", "class_h_labels").style("text-anchor", "start").attr("dx", "2.25em").attr("dy", "-0.4em").attr("transform", "rotate(-22.5)");
+    svg.append("g").attr("class", "x axis")
+        .call(xAxis).selectAll("text")
+        //.attr("class", "class_h_labels")
+        .style("text-anchor", "start")
+        .attr("dx", "2.5em")
+        .attr("dy", "-0.7em")
+        .style("font-size", fontSize)
+        .attr("transform", "rotate(-22.5)");
 
     function getBaseColumnWidth(i) {}
 

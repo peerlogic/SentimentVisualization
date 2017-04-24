@@ -376,13 +376,22 @@ def visualize(id):
  else:
      cur.execute("SELECT json FROM Config WHERE id='" + id + "'")
      rows = cur.fetchall()
+     try:
+        w = int(request.args.get('width'))
+     except:
+        w = None
+
+     try:
+        h = int(request.args.get('height'))
+     except:
+        h = None
 
      if len(rows) == 0:
          return jsonify(error="Shoot.. I couldn't find the config data")
      else:
          data = json.loads(rows[0][0])
-         w = len(data['h_labels']) * 200
-         h = len(data['v_labels']) * 60
+         w = len(data['h_labels']) * 200 if w == None else w
+         h = len(data['v_labels']) * 60 if h == None else h
          return render_template('visualization.html', json_data = rows[0], width=w, height=h)
 
 if __name__ == '__main__':

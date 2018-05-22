@@ -390,7 +390,7 @@ def visualize(id):
          return jsonify(error="Shoot.. I couldn't find the config data")
      else:
          data = json.loads(rows[0][0])
-         w = len(data['h_labels']) * 200 if w == None else w
+         w = len(data['h_labels']) * 190 if w == None else w
          h = len(data['v_labels']) * 80 if h == None else h
          return render_template('visualization.html', json_data = rows[0], width=w, height=h)
 

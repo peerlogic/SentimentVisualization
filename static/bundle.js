@@ -10,8 +10,8 @@ var margin = {
         top: 100,
         right: 0,
         bottom: 0,
-        left: $("#chart").parent().width() / 6
-            //left: 0
+        //left: $("#chart").parent().width() / 6
+        left: 0
     }
     , width = $("#chart").parent().width()
     , height = $("#chart").parent().height()
@@ -86,6 +86,10 @@ window.visualizeJsonData = function(data) {
     fontSize = data['font-size']
     h_labels = data.h_labels;
     v_labels = data.v_labels;
+    h_label_max = h_labels.sort(function (a, b) { return b.length - a.length; })[0]
+    v_label_max = v_labels.sort(function (a, b) { return b.length - a.length; })[0]
+    margin.top = h_label_max.length * 20;
+    margin.left = v_label_max.length * 15;
     customColorSchemeEnabled = data.showCustomColorScheme;
     //console.log(height);
     //console.log(width);
@@ -420,18 +424,19 @@ function loadChart(data, expandedColumn = h_labels.length + 1) {
         var legendElementWidth = total_legendWidth / legend_values.length;
         legend_values.unshift(minimum_value);
         legend_values.pop();
-        var legend = svg.selectAll(".legend").data(legend_values);
-        legend.enter().append("g").attr("class", "legend");
-        legend.append("rect").attr("x", function (d, i) {
-            return legendElementWidth * i + (1 - legendWidthPercentage) * total_legendWidth / 2;
-        }).attr("y", gridHeight * (v_labels.length + 0.5)).attr("width", legendElementWidth).attr("height", function (d, i) {
+        function getLegendHeight(){
             if ((gridHeight / 2) > 35) {
                 return 35;
             }
             else {
                 return gridHeight / 2
             }
-        }).style("fill", function (d, i) {
+        }
+        var legend = svg.selectAll(".legend").data(legend_values);
+        legend.enter().append("g").attr("class", "legend");
+        legend.append("rect").attr("x", function (d, i) {
+            return legendElementWidth * i + (1 - legendWidthPercentage) * total_legendWidth / 2;
+        }).attr("y", (gridHeight * v_labels.length) + 10).attr("width", legendElementWidth).attr("height", getLegendHeight()).style("fill", function (d, i) {
             return getRangeColor(d);
         });
         legend.append("text").attr("class", "mono").text(function (d) {
@@ -439,7 +444,7 @@ function loadChart(data, expandedColumn = h_labels.length + 1) {
             else return "≥" + d.toFixed(2);
         }).attr("x", function (d, i) {
             return legendElementWidth * i + (1 - legendWidthPercentage) * total_legendWidth / 2;
-        }).attr("y", gridHeight * (v_labels.length + 0.5) + 50);
+        }).attr("y", gridHeight * v_labels.length + getLegendHeight());
         legend.exit().remove();
         //changeTextSize();
 

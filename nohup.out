@@ -1,0 +1,253 @@
+Traceback (most recent call last):
+  File "SentimentVisualization.py", line 1, in <module>
+    from flask import Flask, request, render_template, jsonify, redirect, url_for
+ImportError: No module named flask
+ * Running on http://0.0.0.0:3009/ (Press CTRL+C to quit)
+152.14.92.77 - - [03/Apr/2018 10:25:51] "GET /developer HTTP/1.0" 200 -
+152.14.92.77 - - [03/Apr/2018 10:25:51] "GET /static/style.css HTTP/1.0" 200 -
+ * Running on http://0.0.0.0:3009/ (Press CTRL+C to quit)
+152.14.92.77 - - [22/May/2018 16:54:40] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:54:40] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:54:43] "GET /viz/06c4e471-79fe-4b87-a8c1-ddda3dd066ea HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:54:43] "GET /viz/93354be0-3478-4466-89d1-a1e96d564d0a HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:57:50] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:57:51] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:57:53] "GET /viz/c6fadc9b-a298-4607-8273-521b6a1ccc19 HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:57:53] "GET /viz/4f84441e-96a2-4940-8034-82b71c50c07b HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:58:54] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:58:54] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:58:57] "GET /viz/851b8aae-213a-492e-8345-92a8fb38c74f HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:58:57] "GET /viz/439b425b-caaf-4600-a038-47581fa91856 HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:59:07] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:59:25] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:59:25] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:59:27] "GET /viz/f781cb9e-d08d-461f-ab7e-864c49dae264 HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:59:27] "GET /viz/e1f0dafe-6112-45dd-9948-f9a3f0801f2f HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:59:50] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:59:50] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:59:53] "GET /viz/da297a6f-15fd-4602-9f9c-0fa9eda03a14 HTTP/1.0" 200 -
+152.14.92.77 - - [22/May/2018 16:59:53] "GET /viz/dfcbd151-2a97-41db-8ba3-bfb899bac0dc HTTP/1.0" 200 -
+ * Running on http://0.0.0.0:3009/ (Press CTRL+C to quit)
+152.14.92.77 - - [25/May/2018 11:01:19] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:01:19] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:01:24] "GET /viz/f91cf51c-50e7-4597-a2f4-98be474849d9 HTTP/1.0" 200 -
+[2018-05-25 11:01:24,458] ERROR in app: Exception on /viz/ba72c9ca-e5d7-4317-9bfb-cd9113e2287e [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1988, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1641, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.7/site-packages/flask_cors/extension.py", line 188, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1544, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1639, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.7/site-packages/flask/app.py", line 1625, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/usr/lib/python2.7/site-packages/flask_cors/decorator.py", line 127, in wrapped_function
+    resp = make_response(f(*args, **kwargs))
+  File "SentimentVisualization.py", line 377, in visualize
+    cur.execute("SELECT json FROM Config WHERE id='" + id + "'")
+ProgrammingError: Recursive use of cursors not allowed.
+152.14.92.77 - - [25/May/2018 11:01:24] "GET /viz/ba72c9ca-e5d7-4317-9bfb-cd9113e2287e HTTP/1.0" 500 -
+152.14.92.77 - - [25/May/2018 11:01:25] "GET /static/jquery.js HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:01:25] "GET /static/protip.css HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:01:25] "GET /static/protip.js HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:01:25] "GET /static/bundle.js HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:01:37] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:01:37] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:01:40] "GET /viz/47a38c99-9279-4cf4-8582-ece38df2fcc3 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:01:40] "GET /viz/c400c424-8e0c-4d84-a19d-780a2265187f HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:02:40] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:02:40] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:02:41] "GET /viz/fccb81f6-0da7-4b8e-b9fd-72ea33edf20b HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:02:41] "GET /viz/96c94455-fe26-4721-8b40-4da39bf53808 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:03:07] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:03:08] "GET /viz/76778af3-b333-4b90-bb69-9297095fec29 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:03:25] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:03:25] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:03:27] "GET /viz/34c60cad-bd75-4e1d-b81b-bd6133445140 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:03:27] "GET /viz/db5d912c-8480-47e9-a933-d474325a8b2b HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:03:51] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:05:58] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:05:58] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:05:59] "GET /viz/78605c50-cd40-4244-8262-8c30da9cc001 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 11:05:59] "GET /viz/0089f50f-f3f7-4dd8-a7b4-55dc3130f692 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:19:27] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:19:29] "GET /viz/fe31b3b8-88bf-477c-8706-f379acbaa2bd HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:19:40] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:19:40] "GET /viz/c0ac0a17-c9bd-4adc-ba45-b9988395bd98 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:20:45] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:20:52] "GET /viz/aa1898e2-625d-4d85-b0c2-2655a9dce8db HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:21:39] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:21:43] "GET /viz/8544dd71-63d2-4cbd-b059-a6242c9931fc HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:24:31] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:24:39] "GET /viz/09d9e5b6-a2fd-48a8-89d4-19de679b821a HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:27:14] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:27:19] "GET /viz/9022d0a0-5d25-499d-9d38-273d4930b220 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:28:46] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:28:50] "GET /viz/16a439e7-25a3-4e54-85de-5bc4aa7a3f29 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:29:09] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:29:12] "GET /viz/9b763de7-6d2d-4a6f-b8f6-85fe8192fb9a HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:29:48] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:29:51] "GET /viz/4dc9fcab-86df-49ba-a812-087ed54f13c5 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:30:30] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:30:34] "GET /viz/c5d66df7-8213-4ab0-a98f-ad35de361875 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:37:52] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:37:55] "GET /viz/b8500050-7270-467a-afd6-e85ee80b3627 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:38:29] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:38:34] "GET /viz/068c5b34-3431-4737-90a0-cacd4b92604f HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:38:45] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:38:49] "GET /viz/f80693e4-abf1-4b39-99a3-1a0adaecc683 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:41:07] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:41:17] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:41:18] "GET /viz/5891220e-1180-4cd1-8d3a-1602d441d601 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:41:48] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:41:49] "GET /viz/78a0ec84-b9a9-4f51-b74f-ec32a91cbcd6 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:42:07] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:42:07] "GET /viz/7c6b7499-3bed-4e78-b17c-d779fd52822c HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:43:37] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:43:38] "GET /viz/275ec638-f306-4ad1-bc82-84a3d1f121b2 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:46:27] "GET /viz/275ec638-f306-4ad1-bc82-84a3d1f121b2 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:46:55] "GET /viz/275ec638-f306-4ad1-bc82-84a3d1f121b2 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:46:55] "GET /static/jquery.js HTTP/1.0" 304 -
+152.14.92.77 - - [25/May/2018 13:46:55] "GET /static/protip.css HTTP/1.0" 304 -
+152.14.92.77 - - [25/May/2018 13:46:55] "GET /static/protip.js HTTP/1.0" 304 -
+152.14.92.77 - - [25/May/2018 13:46:55] "GET /static/bundle.js HTTP/1.0" 304 -
+152.14.92.77 - - [25/May/2018 13:56:51] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:56:56] "GET /viz/77767942-ef98-4e81-a511-33e187f48bd3 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:57:49] "GET /viz/77767942-ef98-4e81-a511-33e187f48bd3 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:58:22] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:58:23] "GET /viz/66b6035f-6f55-4069-b5f0-ccef0d3e1554 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:58:44] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:58:46] "GET /viz/db04a2a4-279b-4eaa-b5c4-d7542665960b HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:58:59] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:59:01] "GET /viz/949c00ab-a1ed-4be3-9880-0e9aa73cf2b7 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:59:02] "GET /static/jquery.js HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:59:02] "GET /static/protip.css HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:59:02] "GET /static/protip.js HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:59:02] "GET /static/bundle.js HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:59:12] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:59:14] "GET /viz/5077de22-cffa-407d-9b57-72bea421de87 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:59:46] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 13:59:48] "GET /viz/fbb6e60a-22ad-468a-bdfe-e9a4a3396988 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 14:01:17] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 14:01:18] "GET /viz/6ecca700-599c-4837-b208-534af7670087 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 14:01:29] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 14:01:30] "GET /viz/075a5b9f-2a32-44dd-8f83-16a308b64c74 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 14:01:48] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 14:01:49] "GET /viz/18bcda86-40ea-4e1d-917e-74328e99897c HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 14:02:25] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 15:06:45] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 15:06:45] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 15:06:46] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 15:06:46] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 15:06:49] "GET /viz/df8c8ef7-6ba4-42cf-a67b-ac253735acdf HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 15:06:49] "GET /viz/a4460141-38ba-4709-bbfd-411f732dc126 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 15:06:52] "GET /viz/44d80598-5bc6-46bd-b3e3-cf754a40eaba HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 15:06:52] "GET /viz/4688afe5-0b78-476c-b529-159e3c2e8e0d HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 15:07:24] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 15:07:24] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 15:07:25] "GET /viz/e0ce3ac5-d003-489e-8d22-102e101998f5 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 15:07:25] "GET /viz/27d6b0b3-24de-456a-96ff-adda47e611f6 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:38:39] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:38:39] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:38:44] "GET /viz/ac2607b7-174d-431c-bd25-3a6d0beda1ac HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:38:44] "GET /viz/5e45ed13-fe87-4668-a71e-386d0c420857 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:40:25] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:40:25] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:40:26] "GET /viz/5bac1227-5293-4b2e-b1e1-d35224fdfeb2 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:40:26] "GET /viz/9d2a00ab-cebe-4898-88b8-b66edd35a0d5 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:41:26] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:41:26] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:41:27] "GET /viz/b2d7da99-b519-43ce-85e4-1f0659b3bb8f HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:41:27] "GET /viz/933501e1-b15f-4e03-84b3-21b874462986 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:41:35] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:41:35] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:41:35] "GET /viz/15d5c313-e399-46c0-8fd7-417c986b8785 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:41:35] "GET /viz/6e026eb7-7619-4e25-bbd4-a1c7869c2cb3 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:41:51] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:41:51] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:41:51] "GET /viz/a7ecf26a-0996-4a6c-bc99-19767327f5cd HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:41:51] "GET /viz/c6746bf7-5fe9-4601-9c0e-72b74d5af436 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:42:51] "GET /viz/c6746bf7-5fe9-4601-9c0e-72b74d5af436 HTTP/1.0" 200 -
+152.14.92.77 - - [25/May/2018 16:43:06] "GET /viz/a7ecf26a-0996-4a6c-bc99-19767327f5cd HTTP/1.0" 200 -
+ * Running on http://0.0.0.0:3009/ (Press CTRL+C to quit)
+152.14.92.77 - - [30/May/2018 12:25:27] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 12:25:32] "GET /viz/10e1c378-60f3-4650-ac0c-3fa56983e677 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 12:25:32] "GET /static/protip.css HTTP/1.0" 304 -
+152.14.92.77 - - [30/May/2018 12:25:32] "GET /static/jquery.js HTTP/1.0" 304 -
+152.14.92.77 - - [30/May/2018 12:25:32] "GET /static/protip.js HTTP/1.0" 304 -
+152.14.92.77 - - [30/May/2018 12:25:32] "GET /static/bundle.js HTTP/1.0" 200 -
+ * Running on http://0.0.0.0:3009/ (Press CTRL+C to quit)
+152.14.92.77 - - [30/May/2018 13:58:40] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 13:58:42] "GET /viz/f60f6f03-079b-4f6e-a117-b2b3f873316f HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 13:58:50] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 13:58:51] "GET /viz/90c82689-5278-4b5d-844a-22759e63dc44 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 13:58:51] "GET /static/bundle.js HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 13:58:51] "GET /static/protip.css HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 13:58:51] "GET /static/jquery.js HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 13:58:51] "GET /static/protip.js HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 13:59:10] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 13:59:11] "GET /viz/44cc8e49-fb54-488a-a2a7-de49c25ea702 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:00:15] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:00:17] "GET /viz/99fd0dee-7800-4577-95d4-f0f4d513d1dc HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:00:19] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:00:21] "GET /viz/c25bab95-7511-47e5-919f-4b3adb3e3cd0 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:06:05] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:06:06] "GET /viz/bab41068-282e-47e8-906b-f9fb2992ecb3 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:06:09] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:06:11] "GET /viz/c1e2673e-5679-4ecc-b339-88012a6dff04 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:25] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:25] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:26] "GET /viz/cc900a70-3ba0-409f-bf9b-a35ec8ed3a1f HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:26] "GET /viz/a536a569-5f23-4455-95f5-d85a8939957a HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:29] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:29] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:31] "GET /viz/17b38dc1-5f32-405f-a8a8-42b46be85c85 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:31] "GET /viz/f86f897b-b3cf-48c9-b0be-3c0edd96e575 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:33] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:35] "GET /viz/ebf00748-72d8-4b9b-9f1a-72c3a76174d2 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:41] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:41] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:42] "GET /viz/b47d3e12-3846-414d-82c6-3c18e4069cf1 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:42] "GET /viz/50c522f2-640d-4bc7-af76-6df052810dc2 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:43] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:43] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:45] "GET /viz/43367e1b-6a9b-407a-9f94-2c1b5cdcc035 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:07:45] "GET /viz/997746e2-7771-4fbd-81dc-a9b13e05376f HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:09:25] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:09:25] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:09:26] "GET /viz/11d4c206-55f6-4059-950f-7708f1b65de1 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:09:26] "GET /viz/312d440c-9b99-4230-9421-25b8a8baa3f8 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:32:00] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:32:00] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:32:01] "GET /viz/f251f752-d07c-4b1f-97aa-e78e4f1cc17e HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:32:01] "GET /viz/6d5fc37c-471b-4f4b-a66d-b5da2ff4b744 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:32:02] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:32:02] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:32:05] "GET /viz/4947e81e-ffc3-4f3a-b20b-1da9516ac330 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:32:05] "GET /viz/e65ac90d-c929-426e-8937-f6dd509fdfd2 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:16] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:16] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:18] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:18] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:19] "GET /viz/c2f54b28-58e9-466a-bfdc-a4d6f5bf1a10 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:19] "GET /viz/452a279b-dc4b-4855-8862-32d79397b57f HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:21] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:23] "GET /viz/3ce72c04-0e97-4e79-9fe5-ac5c4f4dc837 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:23] "GET /viz/0eeb84bd-b9ed-4be9-81f0-23234eba049f HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:26] "GET /viz/7723a9df-db84-4037-af15-989470d68941 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:26] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:28] "GET /viz/5c06470c-025d-412d-82bc-a9576ecf9dcf HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:32] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:32] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:33] "GET /viz/9be50938-e05b-4b56-bb20-4a9904ac4235 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:33] "GET /viz/739f59ac-e990-47b4-82b2-89334ebda4b7 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:38] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:39] "GET /viz/8881b66e-c6b9-46f0-a7a5-64685ab9fb01 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:44] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:44] "POST /configure HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:45] "GET /viz/ced1d3a9-71ec-421d-8ec1-928391deccd5 HTTP/1.0" 200 -
+152.14.92.77 - - [30/May/2018 14:33:45] "GET /viz/459e533d-97da-4571-a848-f9530563c6dc HTTP/1.0" 200 -
